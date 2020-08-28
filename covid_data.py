@@ -46,14 +46,14 @@ def combine_covid_data(county_data: str, census_data: str):
     df1 = pd.read_csv(county_data)
     df2 = pd.read_csv(census_data, encoding="latin-1")
 
-    logging.info("processing population data")
+    logging.info("processing population data: %s, %s", len(df2), len(df2.columns))
     # FIPS 6-4 used the 2 digits FIPS state code followed by 3 digits county
     df2["fips"] = (df2["STATE"] * 1000) + df2["COUNTY"]
     # use POPESTIMATE2019 as population
     pop_df = df2[["fips", "POPESTIMATE2019"]]
     pop_df = pop_df.rename(columns={"POPESTIMATE2019": "population"})
 
-    logging.info("processing county data")
+    logging.info("processing county data %s", len(df1))
     # groupby and aggregate cases, deaths
     # cols = ["fips", "date", "county", "state"]
     cols = ["fips", "date"]
@@ -82,10 +82,9 @@ def combine_covid_data(county_data: str, census_data: str):
 @click.option("--census_data", default="data/co-est2019-alldata.csv", help="Path to census data")
 @click.option("--output", default="covid_population.csv", help="Path to output file")
 @click.option("--csv_out", default=True, help="Write to CSV or print sample")
-@click.option("--download", default=False, help="Download from url")
-@click.option("--verbose", default=False, help="More logging messages")
+@click.option("--download", "-d", is_flag=True, help="Download from url")
+@click.option("--verbose", is_flag=True, help="More logging messages")
 # pylint: disable=R0913
-
 def main(covid_data="", census_data="", output="", csv_out=True, download=False, verbose=False):
     """Takes covid county data and census data, process, and output csv file.
     Examples:
@@ -112,7 +111,7 @@ def main(covid_data="", census_data="", output="", csv_out=True, download=False,
     df = pd.DataFrame()
     if download:
         dl_covid = dl_file(covid_data, "dl-us-counties.csv")
-        dl_census = dl_file(covid_data, "dl-census-est2019.csv")
+        dl_census = dl_file(census_data, "dl-census-est2019.csv")
         if dl_covid and dl_census:
             df = combine_covid_data(dl_covid, dl_census)
         else:
