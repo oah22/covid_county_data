@@ -101,8 +101,8 @@ $ docker exec -it covid_data bash
 /app# python covid_data.py --covid_data data/us-counties.csv --census_data data/co-est2019-alldata.csv --output res.csv
 
 INFO:root:processing data
-INFO:root:processing population data
-INFO:root:processing county data
+INFO:root:processing population data: 3193, 164
+INFO:root:processing county data 473026
 INFO:root:creating cumulative sums
 INFO:root:sample data: count: 468468
    fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
@@ -136,7 +136,7 @@ INFO:root:writing output file res.csv
     4. this is called population dataframe
 
 - join
-    1. do a right join population population dataframe with groupby dataframe
+    1. do a right join of population dataframe with groupby dataframe
 
 - write to file
     1. write to output csv
@@ -160,8 +160,6 @@ Options:
   --verbose TEXT      More logging messages
   --help              Show this message and exit.
 ```
-
-## Extra Feature
 
 ```sh
 ```
