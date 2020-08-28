@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  covid_data:
+    container_name: covid_data
+    # restart: always
+    build: .
+    command: tail -F /dev/null
+    environment:
+      - DEBUG
+      - APP_DIR=/app
+      - PYTHONPATH=/app
+
+  ## add other services
+
+volumes:
+  db_data: {}
