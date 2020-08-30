@@ -46,21 +46,21 @@ This loads static data from directory. There is another option to download new d
 
 $ python covid_data.py --covid_data data/us-counties.csv --census_data data/co-est2019-alldata.csv --output res.csv
 INFO:root:processing data
-INFO:root:processing population data
-INFO:root:processing county data
+INFO:root:processing population data: 3193, 164
+INFO:root:processing county data 473026
 INFO:root:creating cumulative sums
 INFO:root:sample data: count: 468468
-   fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
-0  1001     55869.0  2020-03-24      1             0                 1                  0
-1  1001     55869.0  2020-03-25      4             0                 5                  0
-2  1001     55869.0  2020-03-26      6             0                11                  0
-3  1001     55869.0  2020-03-27      6             0                17                  0
-4  1001     55869.0  2020-03-28      6             0                23                  0
-5  1001     55869.0  2020-03-29      6             0                29                  0
-6  1001     55869.0  2020-03-30      7             0                36                  0
-7  1001     55869.0  2020-03-31      7             0                43                  0
-8  1001     55869.0  2020-04-01     10             0                53                  0
-9  1001     55869.0  2020-04-02     10             0                63                  0
+    fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
+0  01001     55869.0  2020-03-24      1             0                 1                  0
+1  01001     55869.0  2020-03-25      4             0                 5                  0
+2  01001     55869.0  2020-03-26      6             0                11                  0
+3  01001     55869.0  2020-03-27      6             0                17                  0
+4  01001     55869.0  2020-03-28      6             0                23                  0
+5  01001     55869.0  2020-03-29      6             0                29                  0
+6  01001     55869.0  2020-03-30      7             0                36                  0
+7  01001     55869.0  2020-03-31      7             0                43                  0
+8  01001     55869.0  2020-04-01     10             0                53                  0
+9  01001     55869.0  2020-04-02     10             0                63                  0
 INFO:root:writing output file res.csv
 
 ```
@@ -71,20 +71,20 @@ INFO:root:writing output file res.csv
 python covid_data.py --covid_data https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv --census_data https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/totals/co-est2019-alldata.csv --download
 
 INFO:root:processing population data: 3193, 164
-INFO:root:processing county data 476261
+INFO:root:processing county data 479494
 INFO:root:creating cumulative sums
-INFO:root:sample data: count: 471671
-   fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
-0  1001     55869.0  2020-03-24      1             0                 1                  0
-1  1001     55869.0  2020-03-25      4             0                 5                  0
-2  1001     55869.0  2020-03-26      6             0                11                  0
-3  1001     55869.0  2020-03-27      6             0                17                  0
-4  1001     55869.0  2020-03-28      6             0                23                  0
-5  1001     55869.0  2020-03-29      6             0                29                  0
-6  1001     55869.0  2020-03-30      7             0                36                  0
-7  1001     55869.0  2020-03-31      7             0                43                  0
-8  1001     55869.0  2020-04-01     10             0                53                  0
-9  1001     55869.0  2020-04-02     10             0                63                  0
+INFO:root:sample data: count: 474874
+    fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
+0  01001     55869.0  2020-03-24      1             0                 1                  0
+1  01001     55869.0  2020-03-25      4             0                 5                  0
+2  01001     55869.0  2020-03-26      6             0                11                  0
+3  01001     55869.0  2020-03-27      6             0                17                  0
+4  01001     55869.0  2020-03-28      6             0                23                  0
+5  01001     55869.0  2020-03-29      6             0                29                  0
+6  01001     55869.0  2020-03-30      7             0                36                  0
+7  01001     55869.0  2020-03-31      7             0                43                  0
+8  01001     55869.0  2020-04-01     10             0                53                  0
+9  01001     55869.0  2020-04-02     10             0                63                  0
 INFO:root:writing output file covid_population.csv
 ```
 
@@ -105,17 +105,17 @@ INFO:root:processing population data: 3193, 164
 INFO:root:processing county data 473026
 INFO:root:creating cumulative sums
 INFO:root:sample data: count: 468468
-   fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
-0  1001     55869.0  2020-03-24      1             0                 1                  0
-1  1001     55869.0  2020-03-25      4             0                 5                  0
-2  1001     55869.0  2020-03-26      6             0                11                  0
-3  1001     55869.0  2020-03-27      6             0                17                  0
-4  1001     55869.0  2020-03-28      6             0                23                  0
-5  1001     55869.0  2020-03-29      6             0                29                  0
-6  1001     55869.0  2020-03-30      7             0                36                  0
-7  1001     55869.0  2020-03-31      7             0                43                  0
-8  1001     55869.0  2020-04-01     10             0                53                  0
-9  1001     55869.0  2020-04-02     10             0                63                  0
+    fips  population        date  cases  daily_deaths  cumulative_cases  cumulative_deaths
+0  01001     55869.0  2020-03-24      1             0                 1                  0
+1  01001     55869.0  2020-03-25      4             0                 5                  0
+2  01001     55869.0  2020-03-26      6             0                11                  0
+3  01001     55869.0  2020-03-27      6             0                17                  0
+4  01001     55869.0  2020-03-28      6             0                23                  0
+5  01001     55869.0  2020-03-29      6             0                29                  0
+6  01001     55869.0  2020-03-30      7             0                36                  0
+7  01001     55869.0  2020-03-31      7             0                43                  0
+8  01001     55869.0  2020-04-01     10             0                53                  0
+9  01001     55869.0  2020-04-02     10             0                63                  0
 INFO:root:writing output file res.csv
 ```
 
