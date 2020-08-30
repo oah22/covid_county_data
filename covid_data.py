@@ -43,12 +43,19 @@ def combine_covid_data(county_data: str, census_data: str):
     """
     # load dataframe
     #
-    df1 = pd.read_csv(county_data)
-    df2 = pd.read_csv(census_data, encoding="latin-1")
+    df1 = None
+    df2 = None
 
+    try:
+        df1 = pd.read_csv(county_data, dtype={"fips": str})
+        df2 = pd.read_csv("data/co-est2019-alldata.csv",
+                          encoding="latin-1", dtype={"STATE": str, "COUNTY": str})
+    except Exception as exc:
+        logging.warning("unable to load df: %s", str(exc))
+        return
     logging.info("processing population data: %s, %s", len(df2), len(df2.columns))
     # FIPS 6-4 used the 2 digits FIPS state code followed by 3 digits county
-    df2["fips"] = (df2["STATE"] * 1000) + df2["COUNTY"]
+    df2["fips"] = df2["STATE"] + df2["COUNTY"]
     # use POPESTIMATE2019 as population
     pop_df = df2[["fips", "POPESTIMATE2019"]]
     pop_df = pop_df.rename(columns={"POPESTIMATE2019": "population"})
