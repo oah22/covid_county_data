@@ -48,7 +48,7 @@ def combine_covid_data(county_data: str, census_data: str):
 
     try:
         df1 = pd.read_csv(county_data, dtype={"fips": str})
-        df2 = pd.read_csv("data/co-est2019-alldata.csv",
+        df2 = pd.read_csv(census_data,
                           encoding="latin-1", dtype={"STATE": str, "COUNTY": str})
     except Exception as exc:
         logging.warning("unable to load df: %s", str(exc))
@@ -67,6 +67,9 @@ def combine_covid_data(county_data: str, census_data: str):
     group_fin_df = df1.groupby(cols, as_index=False).agg(
         {"cases": "sum", "deaths": "sum"}
     )
+    # set multicol index, pivot date values to columns, and then unpivot date labels
+    group_fin_df = group_fin_df.set_index(cols).unstack("date", fill_value=0).stack("date")
+    group_fin_df = group_fin_df.reset_index()
 
     logging.info("creating cumulative sums")
     # get cumulative sum in separate df
@@ -81,6 +84,7 @@ def combine_covid_data(county_data: str, census_data: str):
     # res_df = pd.merge(group_fin_df, pop_df, on="fips", how="left")
     res_df = pd.merge(pop_df, group_fin_df, on="fips", how="right")
     logging.info("sample data: count: %s \n%s", len(res_df), res_df.head(10))
+
     return res_df
 
 
