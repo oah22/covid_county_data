@@ -149,3 +149,4 @@ log.txt*
 /.docker_image.tar
 
 *pdf
+*.csv
