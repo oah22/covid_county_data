@@ -52,7 +52,7 @@ def combine_covid_data(county_data: str, census_data: str):
                           encoding="latin-1", dtype={"STATE": str, "COUNTY": str})
     except Exception as exc:
         logging.warning("unable to load df: %s", str(exc))
-        return
+        return pd.DataFrame()
     logging.info("processing population data: %s, %s", len(df2), len(df2.columns))
     # FIPS 6-4 used the 2 digits FIPS state code followed by 3 digits county
     df2["fips"] = df2["STATE"] + df2["COUNTY"]
@@ -60,29 +60,34 @@ def combine_covid_data(county_data: str, census_data: str):
     pop_df = df2[["fips", "POPESTIMATE2019"]]
     pop_df = pop_df.rename(columns={"POPESTIMATE2019": "population"})
 
-    logging.info("processing county data %s", len(df1))
+    logging.info("processing county data %s, %s", len(df1), len(df1["fips"].unique()))
     # groupby and aggregate cases, deaths
     # cols = ["fips", "date", "county", "state"]
     cols = ["fips", "date"]
-    group_fin_df = df1.groupby(cols, as_index=False).agg(
-        {"cases": "sum", "deaths": "sum"}
-    )
+
+    # reorder and drop state and country
+    df1 = df1[["fips", "date", "cases", "deaths"]]
+    # drop non-county data
+    notna_df = df1[df1["fips"].notna()]
+
     # set multicol index, pivot date values to columns, and then unpivot date labels
-    group_fin_df = group_fin_df.set_index(cols).unstack("date", fill_value=0).stack("date")
-    group_fin_df = group_fin_df.reset_index()
+    dates_df = notna_df.set_index(cols).unstack("date", fill_value=0).stack("date")
+    dates_df = dates_df.reset_index()
 
-    logging.info("creating cumulative sums")
-    # get cumulative sum in separate df
-    cumsum_df = group_fin_df.groupby(["fips"]).agg(
-        {"cases": "cumsum", "deaths": "cumsum"})
-    group_fin_df["cumulative_cases"] = cumsum_df["cases"]
-    group_fin_df["cumulative_deaths"] = cumsum_df["deaths"]
+    logging.info("creating diff columns")
+    # get diff in separate df
+    diff_df = dates_df.groupby(["fips"]).agg(
+        {"cases": "diff", "deaths": "diff"}).fillna(0)
+    dates_df["daily_cases"] = diff_df["cases"]
+    dates_df["daily_deaths"] = diff_df["deaths"]
 
-    group_fin_df = group_fin_df.rename(columns={"deaths": "daily_deaths"})
+    dates_df = dates_df.rename(columns={"cases": "cumulative_cases"})
+    dates_df = dates_df.rename(columns={"deaths": "cumulative_deaths"})
 
     # do join on census data and population data on column fips
     # res_df = pd.merge(group_fin_df, pop_df, on="fips", how="left")
-    res_df = pd.merge(pop_df, group_fin_df, on="fips", how="right")
+    res_df = pd.merge(pop_df, dates_df, on="fips", how="right")
+    res_df = res_df[["fips", "date", "daily_cases", "daily_deaths", "cumulative_cases", "cumulative_deaths"]]
     logging.info("sample data: count: %s \n%s", len(res_df), res_df.head(10))
 
     return res_df
